@@ -12,6 +12,7 @@ CREATE TABLE admin(
 
 CREATE TABLE music (
     _id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
     audioBuffer BYTEA NOT NULL,
     downloadCount SERIAL,
     tags TEXT[5],
