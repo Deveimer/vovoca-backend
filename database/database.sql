@@ -14,9 +14,9 @@ CREATE TABLE music (
     _id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
     audioBuffer BYTEA NOT NULL,
-    downloadCount SERIAL,
+    downloadCount INT DEFAULT 0,
     tags TEXT[5],
-    timestapms TIMESTAMP DEFAULT NOW(),
+    timestamps TIMESTAMP DEFAULT NOW(),
     createdBy UUID REFERENCES admin(_id)
 );
 

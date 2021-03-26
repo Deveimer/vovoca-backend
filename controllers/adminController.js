@@ -30,7 +30,7 @@ const controller = {
 
         } catch (error) {
             console.error(error)
-            res.json(error.message)
+            res.status(400).json(error.message)
         }
     },
     login: async (req, res) => {
@@ -54,7 +54,7 @@ const controller = {
             res.json({ ...rows[0], token })
         } catch (error) {
             console.error(error)
-            res.json(error.message)
+            res.status(400).json(error.message)
         }
     }
 }
