@@ -56,7 +56,36 @@ const controller = {
             console.error(error)
             res.status(400).json(error.message)
         }
-    }
+    },
+    addMusic: async (req, res) => {
+        try {
+            const { name, tags } = req.body
+            if (!name || !tags || tags.length === 0)
+                throw Error("All fields are mandatory")
+            const resp = await pool.query("INSERT INTO music (name, audioBuffer, tags, createdBy) VALUES($1, $2, $3, $4) RETURNING *", [
+                name, 
+                req.file.buffer,
+                JSON.parse(tags),
+                req.user
+            ])
+            res.json(resp.rows[0])
+        }
+        catch(e){
+            console.log(e)
+            res.status(400).json(e.message)
+        }
+    },
+    getUploaded: async (req, res) => {
+        try {
+            const { rows } = await pool.query("SELECT * FROM music WHERE createdby = $1", [req.user])
+            if (rows.length === 0)
+                throw Error("You need to create music first")
+            res.json(rows)
+        } catch (error) {
+            console.log(e)
+            res.status(400).json(e.message)
+        }
+    },
 }
 
 module.exports = controller
