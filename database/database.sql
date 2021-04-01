@@ -6,8 +6,7 @@ CREATE TABLE admin(
     _id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     username VARCHAR(150) UNIQUE NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
-    password VARCHAR(150) NOT NULL,
-    music UUID[]
+    password VARCHAR(150) NOT NULL
 );
 
 CREATE TABLE music (
