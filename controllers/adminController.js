@@ -57,6 +57,15 @@ const controller = {
             res.status(400).json(error.message)
         }
     },
+    getUser: async (req, res) => {
+        try {
+            const {rows} = await pool.query("SELECT * FROM admin WHERE _id = $1", [req.user])
+            res.json(rows[0])
+        } catch (error) {
+            console.error(error)
+            res.status(400).json(error.message)
+        }
+    },
     addMusic: async (req, res) => {
         try {
             const { name, tags } = req.body
@@ -82,8 +91,8 @@ const controller = {
                 throw Error("You need to create music first")
             res.json(rows)
         } catch (error) {
-            console.log(e)
-            res.status(400).json(e.message)
+            console.log(error)
+            res.status(400).json(error.message)
         }
     },
 }

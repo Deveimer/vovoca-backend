@@ -7,7 +7,7 @@ const controller = {
             const limit = parseInt(req.query.limit) || 10
             const offset = page ? limit * (page - 1) : 0
             const tags = req.query.category?.split(' ') || []
-            const result = await pool.query("SELECT * FROM music WHERE $1 <@ tags LIMIT $2 OFFSET $3", [tags, limit, offset])
+            const result = await pool.query("SELECT music._id, music.name, music.audiobuffer, music.downloadcount, music.tags, admin.username as artist FROM music JOIN admin on music.createdby = admin._id WHERE $1 <@ music.tags LIMIT $2 OFFSET $3", [tags, limit, offset])
             const result2 = await pool.query("SELECT COUNT(*) OVER() FROM music WHERE $1 <@ tags", [tags])
             const totalPages = Math.ceil(result2.rows.length / limit);
             if (totalPages < page)

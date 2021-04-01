@@ -6,6 +6,7 @@ const upload = require('../middlewares/multer')
 
 router.post('/register', adminController.register)
 router.post('/login', adminController.login)
+router.get('/', authAdmin, adminController.getUser)
 router.post('/', upload.single('music'), authAdmin, adminController.addMusic)
 router.get('/uploaded', authAdmin, adminController.getUploaded)
 
