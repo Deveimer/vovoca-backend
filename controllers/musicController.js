@@ -24,7 +24,7 @@ const controller = {
     getMusic: async (req, res) => {
         try {
             const id = req.params.id
-            const result = await pool.query("SELECT music._id, music.name, music.audiobuffer, music.downloadcount, music.tags, admin.username as artist FROM music JOIN admin on music.createdby = admin._id WHERE music._id = $1", [id])
+            const result = await pool.query("SELECT music._id, music.name, music.downloadcount, music.tags, admin.username as artist FROM music JOIN admin on music.createdby = admin._id WHERE music._id = $1", [id])
             if (result.rows.length === 0)
                 throw Error("No music founded right now")
             res.json(result.rows[0])

@@ -69,12 +69,14 @@ const controller = {
     addMusic: async (req, res) => {
         try {
             const { name, tags } = req.body
+            const image = `https://source.unsplash.com/random/800x400?sig=${Math.random()}`
             if (!name || !tags || tags.length === 0)
                 throw Error("All fields are mandatory")
-            const resp = await pool.query("INSERT INTO music (name, audioBuffer, tags, createdBy) VALUES($1, $2, $3, $4) RETURNING *", [
+            const resp = await pool.query("INSERT INTO music (name, audioBuffer, tags, image, createdBy) VALUES($1, $2, $3, $4, $5) RETURNING name", [
                 name, 
                 req.file.buffer,
                 JSON.parse(tags),
+                image,
                 req.user
             ])
             res.json(resp.rows[0])

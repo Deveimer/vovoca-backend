@@ -15,11 +15,7 @@ CREATE TABLE music (
     audioBuffer BYTEA NOT NULL,
     downloadCount INT DEFAULT 0,
     tags TEXT[5],
+    image VARCHAR(250) NOT NULL,
     timestamps TIMESTAMP DEFAULT NOW(),
     createdBy UUID REFERENCES admin(_id)
-);
-
-CREATE TABLE customer (
-    googleID VARCHAR(100) PRIMARY KEY,
-    downloadMusic UUID[]
 );
