@@ -72,7 +72,7 @@ const controller = {
             const image = `https://source.unsplash.com/random/800x400?sig=${Math.random()}`
             if (!name || !tags || tags.length === 0)
                 throw Error("All fields are mandatory")
-            const resp = await pool.query("INSERT INTO music (name, audioBuffer, tags, image, createdBy) VALUES($1, $2, $3, $4, $5) RETURNING name", [
+            const resp = await pool.query("INSERT INTO music (name, audioBuffer, tags, image, createdBy) VALUES($1, $2, $3, $4, $5) RETURNING name, _id", [
                 name, 
                 req.file.buffer,
                 JSON.parse(tags),
