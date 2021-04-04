@@ -89,11 +89,11 @@ const controller = {
     getUploaded: async (req, res) => {
         try {
             const page = parseInt(req.query.page) || 1
-            const offset = (page - 1) * 1
+            const offset = (page - 1) * 5
             console.log(offset);
-            const { rows } = await pool.query("SELECT name FROM music WHERE createdby = $1 LIMIT 1 OFFSET $2", [req.user, offset])
+            const { rows } = await pool.query("SELECT name FROM music WHERE createdby = $1 LIMIT 5 OFFSET $2", [req.user, offset])
             const result2 = await pool.query("SELECT COUNT(*) OVER() FROM music WHERE createdby = $1", [req.user])
-            let totalPages = Math.ceil(result2.rows.length / 1);
+            let totalPages = Math.ceil(result2.rows.length / 5);
             if (totalPages < page)
                 throw Error("Request Pages Exceeded")
             if (rows.length === 0)
