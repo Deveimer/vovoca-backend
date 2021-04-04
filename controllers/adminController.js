@@ -88,10 +88,17 @@ const controller = {
     },
     getUploaded: async (req, res) => {
         try {
-            const { rows } = await pool.query("SELECT * FROM music WHERE createdby = $1", [req.user])
+            const page = parseInt(req.query.page) || 1
+            const offset = (page - 1) * 1
+            console.log(offset);
+            const { rows } = await pool.query("SELECT name FROM music WHERE createdby = $1 LIMIT 1 OFFSET $2", [req.user, offset])
+            const result2 = await pool.query("SELECT COUNT(*) OVER() FROM music WHERE createdby = $1", [req.user])
+            let totalPages = Math.ceil(result2.rows.length / 1);
+            if (totalPages < page)
+                throw Error("Request Pages Exceeded")
             if (rows.length === 0)
                 throw Error("You need to create music first")
-            res.json(rows)
+            res.json({data: rows, totalPages})
         } catch (error) {
             console.log(error)
             res.status(400).json(error.message)
