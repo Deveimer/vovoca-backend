@@ -8,7 +8,7 @@ const controller = {
             const offset = page ? limit * (page - 1) : 0
             const tags = req.query.category?.split(' ') || ["hip-hop", "bass", "chill", "beats", "musical", "edm", "electric", "slow", "vocal", "house"]
             const result = await pool.query("SELECT music._id, music.name, music.image, music.audiobuffer, music.downloadcount, music.tags, admin.username as artist FROM music JOIN admin on music.createdby = admin._id WHERE $1 && music.tags LIMIT $2 OFFSET $3", [tags, limit, offset])
-            const result2 = await pool.query("SELECT COUNT(*) OVER() FROM music WHERE $1 <= tags", [tags])
+            const result2 = await pool.query("SELECT COUNT(*) OVER() FROM music WHERE $1 && tags", [tags])
             let totalPages = Math.ceil(result2.rows.length / limit);
             if (totalPages < page)
                 throw Error("Request Pages Exceeded")
