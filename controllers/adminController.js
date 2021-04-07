@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const pool = require('../database/pg')
+const { createClient } = require('pexels');
+const client = createClient('563492ad6f917000010000010bd69e0d558949eab8afa4613142cca8');
 
 const controller = {
     register: async (req, res) => {
@@ -68,15 +70,16 @@ const controller = {
     },
     addMusic: async (req, res) => {
         try {
+            const id = Math.floor(Math.random() * 899999 + 1000000)
+            const { src } = await client.photos.show({ id })
             const { name, tags } = req.body
-            const image = `https://source.unsplash.com/random/800x400?sig=${Math.random()}`
             if (!name || !tags || tags.length === 0)
                 throw Error("All fields are mandatory")
             const resp = await pool.query("INSERT INTO music (name, audioBuffer, tags, image, createdBy) VALUES($1, $2, $3, $4, $5) RETURNING name, _id", [
                 name, 
                 req.file.buffer,
                 JSON.parse(tags),
-                image,
+                src.original,
                 req.user
             ])
             res.json(resp.rows[0])
