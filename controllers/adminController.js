@@ -68,7 +68,7 @@ const controller = {
   },
   //logout functionality
   logout: async (req, res) =>{
-    res.clearCookie('token').status(200).json('User Logged-out');
+    res.clearCookie('token').status(200).json('user logged out');
   },
   getUser: async (req, res) => {
     try {
