@@ -66,6 +66,10 @@ const controller = {
       res.status(400).json(error.message);
     }
   },
+  //logout functionality
+  logout: async (req, res) =>{
+    res.clearCookie('token').status(200).json('user logged out');
+  },
   getUser: async (req, res) => {
     try {
       const { rows } = await pool.query("SELECT * FROM admin WHERE _id = $1", [
