@@ -40,6 +40,28 @@ const controller = {
       res.status(400).json(error.message);
     }
   },
+
+  //forget
+  forget: async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      if (!email || !password) throw Error("All fields are mandatory");
+      const { rows } = await pool.query(
+        "SELECT * FROM admin WHERE email = $1",
+        [email]
+      );
+      if (rows.length === 0) throw Error("Email not registered");
+      await pool.query(
+        "UPDATE admin SET password = $1 WHERE email = $2 ",[password,email]
+      );
+      res.json("password updated");
+    } catch (error) {
+      console.error(error);
+      res.status(400).json(error.message);
+    }
+  },
+
+
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
